@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PostalDeliveryServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.voxvaxnx.TrackingMailItems.services</a>
+</div>
+
+<h1>Coverage Summary for Class: PostalDeliveryServiceImpl (com.voxvaxnx.TrackingMailItems.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostalDeliveryServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,5%
+  </span>
+  <span class="absValue">
+    (4/47)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.voxvaxnx.TrackingMailItems.services;
+&nbsp;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.DeliveryMovement;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostOffice;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostalDelivery;
+&nbsp;import com.voxvaxnx.TrackingMailItems.enums.StatusDelivery;
+&nbsp;import com.voxvaxnx.TrackingMailItems.repository.DeliveryMovementRepository;
+&nbsp;import com.voxvaxnx.TrackingMailItems.repository.PostOfficeRepository;
+&nbsp;import com.voxvaxnx.TrackingMailItems.repository.PostalDeliveryRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import static java.lang.String.*;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class PostalDeliveryServiceImpl implements PostalDeliveryService {
+&nbsp;    private final PostalDeliveryRepository postalDeliveryRepository;
+&nbsp;    private final DeliveryMovementRepository deliveryMovementRepository;
+&nbsp;    private final PostOfficeRepository postOfficeRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    public PostalDeliveryServiceImpl(
+&nbsp;            PostalDeliveryRepository postalDeliveryRepository,
+<b class="fc">&nbsp;            DeliveryMovementRepository deliveryMovementRepository, PostOfficeRepository postOfficeRepository) {</b>
+<b class="fc">&nbsp;        this.postalDeliveryRepository = postalDeliveryRepository;</b>
+<b class="fc">&nbsp;        this.deliveryMovementRepository = deliveryMovementRepository;</b>
+<b class="fc">&nbsp;        this.postOfficeRepository = postOfficeRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public PostalDelivery registerDelivery(PostalDelivery delivery) {
+<b class="nc">&nbsp;        delivery.setRecipientStatus(valueOf(StatusDelivery.Accepted));</b>
+<b class="nc">&nbsp;        delivery.setDeliveryMovements(new ArrayList&lt;&gt;());</b>
+<b class="nc">&nbsp;        PostalDelivery savedDelivery = postalDeliveryRepository.save(delivery);</b>
+<b class="nc">&nbsp;        DeliveryMovement deliveryMovement = new DeliveryMovement(delivery, new Date(), valueOf(StatusDelivery.Accepted), &quot;В пункте приема&quot;);</b>
+<b class="nc">&nbsp;        delivery.getDeliveryMovements().add(deliveryMovement);</b>
+<b class="nc">&nbsp;        deliveryMovementRepository.save(deliveryMovement);</b>
+<b class="nc">&nbsp;        return savedDelivery;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String arriveAtPostOffice(Long deliveryId, PostOffice office) {
+&nbsp;
+<b class="nc">&nbsp;        Optional&lt;PostalDelivery&gt; deliveryOptional = postalDeliveryRepository.findById(deliveryId);</b>
+<b class="nc">&nbsp;        if (deliveryOptional.isPresent()) {</b>
+<b class="nc">&nbsp;            PostalDelivery delivery = deliveryOptional.get();</b>
+<b class="nc">&nbsp;            delivery.setCurrentPostOffice(postOfficeRepository.save(office));</b>
+<b class="nc">&nbsp;            delivery.setRecipientStatus(valueOf(StatusDelivery.ArrivedAtThePostOffice));</b>
+<b class="nc">&nbsp;            postalDeliveryRepository.save(delivery);</b>
+<b class="nc">&nbsp;            DeliveryMovement deliveryMovement = new DeliveryMovement(delivery, new Date(), valueOf(StatusDelivery.ArrivedAtThePostOffice), office.toString());</b>
+<b class="nc">&nbsp;            deliveryMovementRepository.save(deliveryMovement);</b>
+<b class="nc">&nbsp;            return &quot;Отправление успешно зарегистрировано в отделении&quot;;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return &quot;Отправление не найдено&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String departureFromThePostOffice(Long deliveryId) {
+<b class="nc">&nbsp;        Optional&lt;PostalDelivery&gt; deliveryOptional = postalDeliveryRepository.findById(deliveryId);</b>
+<b class="nc">&nbsp;        if (deliveryOptional.isPresent()) {</b>
+<b class="nc">&nbsp;            PostalDelivery delivery = deliveryOptional.get();</b>
+<b class="nc">&nbsp;            delivery.setCurrentPostOffice(null);</b>
+<b class="nc">&nbsp;            delivery.setRecipientStatus(valueOf(StatusDelivery.DepartPostOffice));</b>
+<b class="nc">&nbsp;            postalDeliveryRepository.save(delivery);</b>
+<b class="nc">&nbsp;            DeliveryMovement deliveryMovement = new DeliveryMovement(delivery, new Date(), valueOf(StatusDelivery.DepartPostOffice), &quot;в пути...&quot;);</b>
+<b class="nc">&nbsp;            deliveryMovementRepository.save(deliveryMovement);</b>
+&nbsp;
+<b class="nc">&nbsp;            return &quot;Отправление покинуло отделение&quot;;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return &quot;Отправление не найдено&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String deliveredToTheRecipient(Long deliveryId) {
+<b class="nc">&nbsp;        Optional&lt;PostalDelivery&gt; deliveryOptional = postalDeliveryRepository.findById(deliveryId);</b>
+<b class="nc">&nbsp;        if (deliveryOptional.isPresent()) {</b>
+<b class="nc">&nbsp;            PostalDelivery delivery = deliveryOptional.get();</b>
+<b class="nc">&nbsp;            delivery.setCurrentPostOffice(null);</b>
+<b class="nc">&nbsp;            delivery.setRecipientStatus(valueOf(StatusDelivery.Delivered));</b>
+<b class="nc">&nbsp;            postalDeliveryRepository.save(delivery);</b>
+<b class="nc">&nbsp;            DeliveryMovement deliveryMovement = new DeliveryMovement(delivery, new Date(), valueOf(StatusDelivery.Delivered), delivery.getRecipientAddress());</b>
+<b class="nc">&nbsp;            deliveryMovementRepository.save(deliveryMovement);</b>
+&nbsp;
+<b class="nc">&nbsp;            return &quot;Отправление доставлено&quot;;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return &quot;Отправление не найдено&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getDeliveryStatus(Long deliveryId) {
+<b class="nc">&nbsp;        Optional&lt;PostalDelivery&gt; deliveryOptional = postalDeliveryRepository.findById(deliveryId);</b>
+<b class="nc">&nbsp;        if (deliveryOptional.isPresent()) {</b>
+<b class="nc">&nbsp;            PostalDelivery delivery = deliveryOptional.get();</b>
+<b class="nc">&nbsp;            return delivery.getRecipientStatus();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return &quot;Отправление не найдено&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;DeliveryMovement&gt; getDeliveryMovementHistory(Long deliveryId) {
+<b class="nc">&nbsp;        return postalDeliveryRepository.findMovementHistoryByDeliveryId(deliveryId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-18 21:43</div>
+</div>
+</body>
+</html>

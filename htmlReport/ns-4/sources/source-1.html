@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PostalDeliveryController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.voxvaxnx.TrackingMailItems.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: PostalDeliveryController (com.voxvaxnx.TrackingMailItems.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostalDeliveryController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12,5%
+  </span>
+  <span class="absValue">
+    (2/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.voxvaxnx.TrackingMailItems.controllers;
+&nbsp;
+&nbsp;import com.voxvaxnx.TrackingMailItems.Utils.ConvertPostalDeliveryDTO;
+&nbsp;import com.voxvaxnx.TrackingMailItems.dto.PostalDeliveryDTO;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.DeliveryMovement;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostOffice;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostalDelivery;
+&nbsp;import com.voxvaxnx.TrackingMailItems.services.PostalDeliveryService;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/deliveries&quot;)
+&nbsp;public class PostalDeliveryController {
+&nbsp;
+&nbsp;    private final PostalDeliveryService postalDeliveryService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public PostalDeliveryController(PostalDeliveryService postalDeliveryService) {</b>
+<b class="fc">&nbsp;        this.postalDeliveryService = postalDeliveryService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Register REST&quot;, description = &quot;API дл€ регистрации отправлени€&quot;)
+&nbsp;    @PostMapping(&quot;/register&quot;)
+&nbsp;    public ResponseEntity&lt;PostalDeliveryDTO&gt; registerDelivery(@RequestBody PostalDeliveryDTO deliveryDTO) {
+<b class="nc">&nbsp;        PostalDelivery newDelivery = ConvertPostalDeliveryDTO.convert(deliveryDTO);</b>
+<b class="nc">&nbsp;        PostalDelivery registeredDelivery = postalDeliveryService.registerDelivery(newDelivery);</b>
+<b class="nc">&nbsp;        PostalDeliveryDTO responseDTO = new PostalDeliveryDTO(registeredDelivery);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(responseDTO, HttpStatus.CREATED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Arrive REST&quot;, description = &quot;API дл€ регистрации прибыти€ в почтовое отделение&quot;)
+&nbsp;    @PostMapping(&quot;/{deliveryId}/arrive&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; arriveAtPostOffice(@PathVariable Long deliveryId, @RequestBody PostOffice postOffice) {
+<b class="nc">&nbsp;        String result = postalDeliveryService.arriveAtPostOffice(deliveryId, postOffice);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(result, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Depart REST&quot;, description = &quot;API дл€ регистрации убыти€ из почтового отделени€&quot;)
+&nbsp;    @PostMapping(&quot;/{deliveryId}/depart&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; departureFromThePostOffice(@PathVariable Long deliveryId) {
+<b class="nc">&nbsp;        String result = postalDeliveryService.departureFromThePostOffice(deliveryId);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(result, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Deliver REST&quot;, description = &quot;API дл€ регистрации доставки отправлени€ до адресата&quot;)
+&nbsp;    @PostMapping(&quot;/{deliveryId}/deliver&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; deliveredToTheRecipient(@PathVariable Long deliveryId) {
+<b class="nc">&nbsp;        String result = postalDeliveryService.deliveredToTheRecipient(deliveryId);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(result, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Status REST&quot;, description = &quot;API дл€ получени€ статуса почтового отправлени€&quot;)
+&nbsp;    @GetMapping(&quot;/{deliveryId}/status&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; getDeliveryStatus(@PathVariable Long deliveryId) {
+<b class="nc">&nbsp;        String status = postalDeliveryService.getDeliveryStatus(deliveryId);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(status, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Tag(name = &quot;Movement-history REST&quot;, description = &quot;API дл€ получени€ полной истории движени€ почтового отправлени€&quot;)
+&nbsp;    @GetMapping(&quot;/{deliveryId}/movement-history&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;DeliveryMovement&gt;&gt; getDeliveryMovementHistory(@PathVariable Long deliveryId) {
+<b class="nc">&nbsp;        List&lt;DeliveryMovement&gt; movementHistory = postalDeliveryService.getDeliveryMovementHistory(deliveryId);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(movementHistory, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-18 21:43</div>
+</div>
+</body>
+</html>

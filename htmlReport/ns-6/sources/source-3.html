@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PostalDelivery</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.voxvaxnx.TrackingMailItems.entities</a>
+</div>
+
+<h1>Coverage Summary for Class: PostalDelivery (com.voxvaxnx.TrackingMailItems.entities)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostalDelivery</td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11,8%
+  </span>
+  <span class="absValue">
+    (2/17)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PostalDelivery$HibernateInstantiator$gJvEOCyX</td>
+  </tr>
+  <tr>
+    <td class="name">PostalDelivery$HibernateProxy$ON9TQDWo</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11,8%
+  </span>
+  <span class="absValue">
+    (2/17)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.voxvaxnx.TrackingMailItems.entities;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonProperty;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;import org.hibernate.annotations.Fetch;
+&nbsp;import org.hibernate.annotations.FetchMode;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+<b class="nc">&nbsp;@Data</b>
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="nc">&nbsp;@AllArgsConstructor</b>
+&nbsp;public class PostalDelivery {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+&nbsp;    @Column(name = &quot;delivery_id&quot;)
+&nbsp;    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+<b class="nc">&nbsp;    private Long id;</b>
+&nbsp;    @Column(name = &quot;delivery_type&quot;)
+<b class="nc">&nbsp;    private String type;</b>
+&nbsp;    @Column(name = &quot;recipient_index&quot;)
+<b class="nc">&nbsp;    private Integer recipientIndex;</b>
+&nbsp;    @Column(name = &quot;recipient_address&quot;)
+<b class="nc">&nbsp;    private String recipientAddress;</b>
+&nbsp;    @Column(name = &quot;recipient_name&quot;)
+<b class="nc">&nbsp;    private String recipientName;</b>
+&nbsp;    @Column(name = &quot;recipient_status&quot;)
+<b class="nc">&nbsp;    private String recipientStatus;</b>
+&nbsp;
+<b class="fc">&nbsp;    @OneToMany</b>
+&nbsp;    @JoinColumn(name = &quot;delivery_movements&quot;)
+&nbsp;    @Fetch(FetchMode.JOIN)
+<b class="nc">&nbsp;    private List&lt;DeliveryMovement&gt; deliveryMovements = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;post_office_id&quot;)
+&nbsp;    @Fetch(FetchMode.JOIN)
+<b class="nc">&nbsp;    private PostOffice currentPostOffice;</b>
+&nbsp;
+<b class="nc">&nbsp;    public PostalDelivery(String type, Integer recipientIndex, String recipientAddress, String recipientName) {</b>
+<b class="nc">&nbsp;        this.type = type;</b>
+<b class="nc">&nbsp;        this.recipientIndex = recipientIndex;</b>
+<b class="nc">&nbsp;        this.recipientAddress = recipientAddress;</b>
+<b class="nc">&nbsp;        this.recipientName = recipientName;</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-18 21:43</div>
+</div>
+</body>
+</html>

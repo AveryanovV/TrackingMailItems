@@ -1,0 +1,88 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PostalDeliveryService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.voxvaxnx.TrackingMailItems.services</a>
+</div>
+
+<h1>Coverage Summary for Class: PostalDeliveryService (com.voxvaxnx.TrackingMailItems.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">PostalDeliveryService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.voxvaxnx.TrackingMailItems.services;
+&nbsp;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.DeliveryMovement;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostOffice;
+&nbsp;import com.voxvaxnx.TrackingMailItems.entities.PostalDelivery;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface PostalDeliveryService {
+&nbsp;    PostalDelivery registerDelivery(PostalDelivery delivery);
+&nbsp;
+&nbsp;    String arriveAtPostOffice(Long deliveryId, PostOffice office);
+&nbsp;
+&nbsp;    String departureFromThePostOffice(Long deliveryId);
+&nbsp;
+&nbsp;    String deliveredToTheRecipient(Long deliveryId);
+&nbsp;
+&nbsp;    String getDeliveryStatus(Long deliveryId);
+&nbsp;
+&nbsp;    List&lt;DeliveryMovement&gt; getDeliveryMovementHistory(Long deliveryId);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-18 21:43</div>
+</div>
+</body>
+</html>
