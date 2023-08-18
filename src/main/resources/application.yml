@@ -1,0 +1,30 @@
+
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: -1
+
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+    enabled: true
+  datasource:
+    url: jdbc:h2:file:./MailDB
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+
+  h2:
+    console:
+      enabled: true
