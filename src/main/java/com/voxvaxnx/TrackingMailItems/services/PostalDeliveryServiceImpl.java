@@ -9,6 +9,7 @@ import com.voxvaxnx.TrackingMailItems.repository.PostOfficeRepository;
 import com.voxvaxnx.TrackingMailItems.repository.PostalDeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class PostalDeliveryServiceImpl implements PostalDeliveryService {
     }
 
     @Override
+    @Transactional
     public PostalDelivery registerDelivery(PostalDelivery delivery) {
         delivery.setRecipientStatus(valueOf(StatusDelivery.Accepted));
         delivery.setDeliveryMovements(new ArrayList<>());
@@ -45,6 +47,7 @@ public class PostalDeliveryServiceImpl implements PostalDeliveryService {
     }
 
     @Override
+    @Transactional
     public String arriveAtPostOffice(Long deliveryId, PostOffice office) {
 
         Optional<PostalDelivery> deliveryOptional = postalDeliveryRepository.findById(deliveryId);
@@ -62,6 +65,7 @@ public class PostalDeliveryServiceImpl implements PostalDeliveryService {
     }
 
     @Override
+    @Transactional
     public String departureFromThePostOffice(Long deliveryId) {
         Optional<PostalDelivery> deliveryOptional = postalDeliveryRepository.findById(deliveryId);
         if (deliveryOptional.isPresent()) {
@@ -79,6 +83,7 @@ public class PostalDeliveryServiceImpl implements PostalDeliveryService {
     }
 
     @Override
+    @Transactional
     public String deliveredToTheRecipient(Long deliveryId) {
         Optional<PostalDelivery> deliveryOptional = postalDeliveryRepository.findById(deliveryId);
         if (deliveryOptional.isPresent()) {
